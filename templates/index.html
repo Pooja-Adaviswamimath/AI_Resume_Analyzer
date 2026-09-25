@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name = "viewport" content="width = device-width, initial-scale = 1.0">
+        <title>AI Resume Analyzer</title>
+        <link rel = "stylesheet" href = "{{ url_for('static', filename = 'style.css') }}">
+    </head>
+
+    <body>
+
+        <nav class="navbar">
+            <a href="/">Home</a>
+        </nav>
+
+        <div  class = "container">
+
+        
+
+            <h1>AI Resume Analyzer</h1>
+
+            <p class = "subtitle">
+                Analyze your resume, discover your skills, and identify areas for improvement.
+            </p>
+
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+
+            <form action = "/analyze" method = "POST" enctype = "multipart/form-data">
+
+                <label for = "resume">Choose your resume:</label>
+
+                <br><br>
+
+                <input type = "file" id="resume" name = "resume" accept = ".pdf" required>
+
+                <p class = "file-note">PDF files only</p>
+
+                <br><br>
+
+                <button type = "submit">Analyze Resume</button>
+            </form>
+        </div>
+
+        <footer>
+            <p> AI Resume Analyzer | Built with Flask and Python</p>
+        </footer>
+
+    </body>
+</html>
