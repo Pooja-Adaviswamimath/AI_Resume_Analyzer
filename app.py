@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request # Flask is a python framework used to create web application
 from PyPDF2 import PdfReader
+import ollama
 
 app = Flask(__name__) # __name__ tells Flask where the application is located
 
@@ -62,6 +63,29 @@ def analyze():
 
     score = int((len(found_skills) / len(SKILLS)) * 100)
 
+    ai_response = ollama.chat(
+        model = "llama3.2:3b",
+        messages = [
+            {
+                "role": "user",
+                "content": f"""
+    Analyze this resume and provide useful feedback.
+
+    Resume:
+    {resume_text}
+
+    Give:
+    1. Main strengths
+    2. Weak areas
+    3. Specific improvement suggestions
+    4. Important missing keywords
+    """
+            }
+        ]
+    )
+
+    ai_analysis = ai_response["message"]["content"]
+
     if score >= 80:
         strength = "Strong skill coverage"
     elif score >= 60:
@@ -76,7 +100,8 @@ def analyze():
         found_skills = found_skills,
         missing_skills = missing_skills,
         page_count = page_count,
-        word_count = word_count
+        word_count = word_count,
+        ai_analysis = ai_analysis
     )
 
     

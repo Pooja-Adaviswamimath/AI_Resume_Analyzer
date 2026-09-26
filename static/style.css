@@ -128,3 +128,15 @@ footer {
     color: #777;
     font-size: 13px;
 }
+
+.ai-section {
+    margin-top: 30px;
+}
+
+.ai-feedback {
+    background-color: #f4f6f8;
+    padding: 20px;
+    border-radius: 10px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
