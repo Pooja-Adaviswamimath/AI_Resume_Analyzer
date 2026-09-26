@@ -140,3 +140,10 @@ footer {
     line-height: 1.6;
     white-space: pre-wrap;
 }
+
+.job-role {
+    text-align: center;
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 25px;
+}

@@ -27,6 +27,8 @@ def home():
 def analyze():
     resume = request.files["resume"]
 
+    job_role = request.form["job_role"]
+
     if resume.filename == "":
         return render_template(
             "index.html",
@@ -63,28 +65,36 @@ def analyze():
 
     score = int((len(found_skills) / len(SKILLS)) * 100)
 
-    ai_response = ollama.chat(
-        model = "llama3.2:3b",
-        messages = [
-            {
-                "role": "user",
-                "content": f"""
-    Analyze this resume and provide useful feedback.
+    try:
+        ai_response = ollama.chat(
+            model = "llama3.2:3b",
+            messages = [
+                {
+                    "role": "user",
+                    "content": f"""
+    Analyze this resume specifically for the target job role: {job_role}
 
     Resume:
     {resume_text}
 
-    Give:
-    1. Main strengths
-    2. Weak areas
+    Provide:
+    1. Main strengths relevent to the target job
+    2. Weak areas fo this target job
     3. Specific improvement suggestions
-    4. Important missing keywords
+    4. Important missing keywords or skills for this target job
+    5. Overall suitability for the target job
     """
-            }
-        ]
-    )
+                }
+            ]
+        )
 
-    ai_analysis = ai_response["message"]["content"]
+        ai_analysis = ai_response["message"]["content"]
+
+    except Exception:
+        ai_analysis = (
+            "AI analysis is currently unavailable. "
+            "Please make sure Ollama is running and try again."
+        )
 
     if score >= 80:
         strength = "Strong skill coverage"
@@ -101,7 +111,8 @@ def analyze():
         missing_skills = missing_skills,
         page_count = page_count,
         word_count = word_count,
-        ai_analysis = ai_analysis
+        ai_analysis = ai_analysis,
+        job_role = job_role
     )
 
     
