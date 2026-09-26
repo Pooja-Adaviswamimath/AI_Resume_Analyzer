@@ -69,7 +69,24 @@
             <h2>🤖 AI Resume Feedback</h2>
 
             <div class="ai-feedback">
-                {{ ai_analysis }}
+                {{ ai_analysis | replace('\n', '<br>') | safe}}
+            </div>
+        </div>
+
+        <div class="section ai-score-section">
+            <h2>🤖 AI Job Suitability Score</h2>
+
+            <div class="ai-score">
+                <div class="ai-score-number">
+                    {{ ai_suitability_score }}%
+                </div>
+
+                <div class="ai-score-bar">
+                    <div
+                        class="ai-score-fill"
+                        style="width: {{ ai_suitability_score }}%;">
+                    </div>
+                </div>
             </div>
         </div>
 

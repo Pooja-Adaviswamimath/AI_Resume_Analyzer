@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request # Flask is a python framework used to create web application
+import re
 from PyPDF2 import PdfReader
 import ollama
 
@@ -84,12 +85,27 @@ def analyze():
     4. Important missing keywords or skills for this target job
     5. Overall suitability for the target job
     6. List 10 important technical skills or keywords tha are commonly expected for this target job
+    7. Give an AI job suitability score from 0 to 100 based on how well the resume matches the target job
+
+    At the end, write the score exactly in this format:
+
+    AI_SUITABILITY_SCORE: [score]
     """
                 }
             ]
         )
 
         ai_analysis = ai_response["message"]["content"]
+
+        numbers = re.findall(r'\b\d{1,3}\b', ai_analysis)
+
+        if numbers:
+            ai_suitability_score = int(numbers[-1])
+        else:
+            ai_suitability_score = 0
+
+        print("EXTRACTED SCORE:", ai_suitability_score)
+
 
     except Exception:
         ai_analysis = (
@@ -113,6 +129,7 @@ def analyze():
         page_count = page_count,
         word_count = word_count,
         ai_analysis = ai_analysis,
+        ai_suitability_score = ai_suitability_score,
         job_role = job_role
     )
 
