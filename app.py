@@ -83,6 +83,7 @@ def analyze():
     3. Specific improvement suggestions
     4. Important missing keywords or skills for this target job
     5. Overall suitability for the target job
+    6. List 10 important technical skills or keywords tha are commonly expected for this target job
     """
                 }
             ]
